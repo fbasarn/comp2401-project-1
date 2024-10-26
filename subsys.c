@@ -29,6 +29,10 @@ int subsys_init(Subsystem *subsystem, const char *name, char status){
     Function explanation 
 */
 int subsys_print(Subsystem *subsystem){
+    if(subsystem == NULL){
+        return ERR_NULL_POINTER;
+    }
+
     
     return ERR_NO_DATA;
 }
