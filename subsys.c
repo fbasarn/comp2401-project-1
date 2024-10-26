@@ -7,13 +7,29 @@
 */
 
 
-/* Function explanation */
+/* 
+    Initialization of the memory pointed by the subsystem,
+    initializes the name and status with provided values and 
+    sets the data to 0
+*/
 int subsys_init(Subsystem *subsystem, const char *name, char status){
-    return ERR_NO_DATA;
+    if (subsystem == NULL || name == NULL){
+        return ERR_NULL_POINTER;
+    }
+
+    strncpy(subsystem->name, name, MAX_STR-1);
+    subsystem->name[MAX_STR-1] = '\0';
+    subsystem->status = status;
+    subsystem->data = 0;
+
+    return ERR_SUCCESS;
 }
 
-/* Function explanation */
+/* 
+    Function explanation 
+*/
 int subsys_print(Subsystem *subsystem){
+    
     return ERR_NO_DATA;
 }
 

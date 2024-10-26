@@ -6,9 +6,16 @@
     specific functionality; initialization, appending, removal, printing, finding, and filtering.
 */
 
-    /* Function explanation */
+/* 
+    Initialization of the SubsystemCollection, sets the size
+    to 0.
+ */
 int subsys_collection_init(SubsystemCollection *subsystems){
-    return ERR_NO_DATA;
+    if(subsystems == NULL){
+        return ERR_NULL_POINTER;
+    }
+    subsystems->size = 0;
+    return ERR_SUCCESS;
 }
 
     /* Function explanation */
