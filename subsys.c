@@ -26,15 +26,14 @@ int subsys_init(Subsystem *subsystem, const char *name, char status){
 }
 
 /* 
-    Function explanation 
+    Prints the name, status and the data of the subsystem provided
 */
 int subsys_print(Subsystem *subsystem){
     if(subsystem == NULL){
         return ERR_NULL_POINTER;
     }
-
-    
-    return ERR_NO_DATA;
+    printf("%-16s, %d, %d\n", subsystem->name, subsystem->status, subsystem->data);
+    return ERR_SUCCESS;
 }
 
 /* Function explanation */

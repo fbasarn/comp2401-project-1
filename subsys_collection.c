@@ -59,10 +59,17 @@ int subsys_find(const SubsystemCollection *subsystems, const char *name){
 }
 
 /* 
-    Function explanation 
+    Prints all the subsystems in the collection 
 */
 int subsys_collection_print(SubsystemCollection *subsystems){
-    return ERR_NO_DATA;
+    if(subsystems == NULL){
+        return ERR_NULL_POINTER;
+    }
+
+    for(int i=0; i < subsystems->size; i++){
+        subsys_print(&(subsystems->subsystems[i]));
+    }
+    return ERR_SUCCESS;
 }
 
     /* Function explanation */
