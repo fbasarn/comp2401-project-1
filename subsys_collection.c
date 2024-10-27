@@ -76,3 +76,4 @@ int subsys_collection_print(SubsystemCollection *subsystems){
 int subsys_filter(const SubsystemCollection *src, SubsystemCollection *dest, const unsigned char *filter){
     return ERR_NO_DATA;
 }
+

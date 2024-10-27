@@ -16,8 +16,58 @@
 int print_menu(int *choice);
 
 int main() {
+    int choice = -1;
+
+    // Store a subsystem collection
+    SubsystemCollection subsys_collection;
+    unsigned int collection_size;
+
+    // reserve data to store necessary variables
+    char name[MAX_STR];
+    unsigned char status;
+    unsigned int data;
+    Subsystem subsystem;
+
     // Use a while loop to print the menu for the user and call the appropriate functions.
     // The definitions above are provided to assist with this.
+    do {
+        print_menu(&choice);
+
+        switch (choice)
+            {
+            case MENU_ADD:
+                // Get the user's input and store the results in stack variables above
+                printf("Enter subsystem name: ");
+                fgets(name, MAX_STR, stdin);
+
+                // Initialize the subsystem with the values provided
+                subsys_init(&subsystem, &name, status);
+                // Add the subsystem to the collection
+                subsys_append(&subsys_collection, &subsystem);
+                break;
+            case MENU_PRINT:
+                subsys_print(&subsystem);
+                break;
+            case MENU_PRINTALL:
+                subsys_collection_print(&subsys_collection);
+                break;
+            case MENU_STATUS:
+                /* code */
+                break;
+            case MENU_REMOVE:
+                /* code */
+                break;
+            case MENU_FILTER:
+                /* code */
+                break;
+            case MENU_DATA:
+                /* code */
+                break;
+            case MENU_EXIT:
+                printf("Exiting...\n");
+                break;
+            }
+    } while (choice != MENU_EXIT);
     return 0;
 }
 
