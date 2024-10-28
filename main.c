@@ -39,14 +39,18 @@ int main() {
                 // Get the user's input and store the results in stack variables above
                 printf("Enter subsystem name: ");
                 fgets(name, MAX_STR, stdin);
-
                 // Initialize the subsystem with the values provided
                 subsys_init(&subsystem, &name, status);
                 // Add the subsystem to the collection
                 subsys_append(&subsys_collection, &subsystem);
                 break;
             case MENU_PRINT:
-                subsys_print(&subsystem);
+                // Get the user's input and store
+                printf("Enter subsystem name to print: ");
+                fgets(name, MAX_STR, stdin);
+                // Find the index of the subsystem and print
+                int index = subsys_find(&subsys_collection, &name);
+                subsys_print(&subsys_collection.subsystems[index]);
                 break;
             case MENU_PRINTALL:
                 subsys_collection_print(&subsys_collection);

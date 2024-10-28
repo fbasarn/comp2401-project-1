@@ -38,11 +38,26 @@ int subsys_print(Subsystem *subsystem){
 
 /* Function explanation */
 int subsys_status_set(Subsystem *subsystem, unsigned char status, unsigned char value){
-    return ERR_NO_DATA;
+
+    if(status == STATUS_PERFORMANCE || status == STATUS_RESOURCE){
+        if ( 0 > value || value > 3) return ERR_INVALID_STATUS;
+        subsystem->status = (subsystem->status & ~(1 << status) | (value << status));
+    }
+    else if(status == STATUS_ERROR || status == STATUS_ACTIVITY || status == STATUS_DATA || status == STATUS_POWER){
+        if(value > 1 || value < 0) return ERR_INVALID_STATUS;
+        subsystem->status = (subsystem->status & ~(3 << status)) | (value << status);
+    }
+    else{
+        return ERR_INVALID_STATUS;
+    }
 }
 
 /* Function explanation */
 int subsys_status_print(const Subsystem *subsystem){
+    if(subsystem == NULL){
+        return ERR_NULL_POINTER;
+    }
+    
     return ERR_NO_DATA;
 }
 
