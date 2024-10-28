@@ -32,33 +32,45 @@ int subsys_print(Subsystem *subsystem){
     if(subsystem == NULL){
         return ERR_NULL_POINTER;
     }
-    printf("%-16s, %d, %d\n", subsystem->name, subsystem->status, subsystem->data);
+    printf("Name: %s Status: ", subsystem->name);
+    subsys_status_print(subsystem);
     return ERR_SUCCESS;
 }
 
 /* Function explanation */
 int subsys_status_set(Subsystem *subsystem, unsigned char status, unsigned char value){
-
     if(status == STATUS_PERFORMANCE || status == STATUS_RESOURCE){
-        if ( 0 > value || value > 3) return ERR_INVALID_STATUS;
-        subsystem->status = (subsystem->status & ~(1 << status) | (value << status));
+        if(value < 0 || value > 3) {
+            printf("The value is invalid!\n");
+            return ERR_INVALID_STATUS;
+        }
+        printf("the status code and value is valid!\n");
+        
     }
-    else if(status == STATUS_ERROR || status == STATUS_ACTIVITY || status == STATUS_DATA || status == STATUS_POWER){
-        if(value > 1 || value < 0) return ERR_INVALID_STATUS;
-        subsystem->status = (subsystem->status & ~(3 << status)) | (value << status);
+    if(status == STATUS_DATA || status == STATUS_POWER || status == STATUS_ERROR || status == STATUS_ACTIVITY){
+        if(value < 0 || value > 1) {
+            printf("The value is invalid!\n");
+            return ERR_INVALID_STATUS;
+        }
+        printf("the status code and value is valid!\n");
     }
     else{
+        printf("the status code is invalid!\n");
         return ERR_INVALID_STATUS;
     }
+    return ERR_SUCCESS;
 }
 
 /* Function explanation */
-int subsys_status_print(const Subsystem *subsystem){
-    if(subsystem == NULL){
+int subsys_status_print(const Subsystem *subsystem) {
+    if (subsystem == NULL) {
         return ERR_NULL_POINTER;
     }
-    
-    return ERR_NO_DATA;
+    for (int i = 0; i < 8; i++) {
+        int bit_value = (subsystem->status >> (7 - i)) & 1;
+        printf("%d ", bit_value);
+    }
+    return ERR_SUCCESS;
 }
 
 

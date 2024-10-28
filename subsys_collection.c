@@ -68,6 +68,7 @@ int subsys_collection_print(SubsystemCollection *subsystems){
 
     for(int i=0; i < subsystems->size; i++){
         subsys_print(&(subsystems->subsystems[i]));
+        printf("\n");
     }
     return ERR_SUCCESS;
 }

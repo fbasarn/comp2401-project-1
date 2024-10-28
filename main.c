@@ -27,6 +27,9 @@ int main() {
     unsigned char status;
     unsigned int data;
     Subsystem subsystem;
+    char value;
+
+    int index;
 
     // Use a while loop to print the menu for the user and call the appropriate functions.
     // The definitions above are provided to assist with this.
@@ -40,7 +43,8 @@ int main() {
                 printf("Enter subsystem name: ");
                 fgets(name, MAX_STR, stdin);
                 // Initialize the subsystem with the values provided
-                subsys_init(&subsystem, &name, status);
+                subsys_init(&subsystem, name, status);
+                
                 // Add the subsystem to the collection
                 subsys_append(&subsys_collection, &subsystem);
                 break;
@@ -49,14 +53,28 @@ int main() {
                 printf("Enter subsystem name to print: ");
                 fgets(name, MAX_STR, stdin);
                 // Find the index of the subsystem and print
-                int index = subsys_find(&subsys_collection, &name);
-                subsys_print(&subsys_collection.subsystems[index]);
+                index = subsys_find(&subsys_collection, name);
+
+                //print the subsystem if found, error message if not
+                if(index != ERR_SYS_NOT_FOUND || index != ERR_NULL_POINTER){
+                    subsys_print(&subsys_collection.subsystems[index]);
+                }
+                else{
+                    printf("Subsystem was not found, try again with a different name.\n");
+                }
                 break;
             case MENU_PRINTALL:
                 subsys_collection_print(&subsys_collection);
                 break;
             case MENU_STATUS:
-                /* code */
+                printf("Enter: <Subsystem Name> <Status ID, 7,6,5,4,2, or 0> <New Value (0,3)>: ");
+                scanf("%32s %hhd %hhd", name, &status, &value);
+                if(index != ERR_SYS_NOT_FOUND || index != ERR_NULL_POINTER){
+                    subsys_status_set(&subsystem, status, value);
+                }
+                else{
+                    printf("Subsystem was not found, try again with a different name.\n");
+                }
                 break;
             case MENU_REMOVE:
                 /* code */
