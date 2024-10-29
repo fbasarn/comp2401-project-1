@@ -41,34 +41,20 @@ int subsys_print(Subsystem *subsystem){
 int subsys_status_set(Subsystem *subsystem, unsigned char status, unsigned char value){
 
     if(status == STATUS_PERFORMANCE || status == STATUS_RESOURCE){
-        if(value < 0 || value > 3) {
-            return ERR_INVALID_STATUS;
-        }
-        subsystem->status = subsystem->status | (value << status);
-        printf("here is the curr stat: %d", subsystem->status);
+        
+        if(value < 0 || value > 3) return ERR_INVALID_STATUS;
+        subsystem->status = subsystem->status & ~(3 << status);  //clear the bits
+        if(value != 0) subsystem->status = subsystem->status | (value << status); //set the bits other than 0
 
     }
     if(status == STATUS_DATA || status == STATUS_POWER || status == STATUS_ERROR || status == STATUS_ACTIVITY){
-        if(value == 0){
-            printf("This is the subsystem to set: %16s", subsystem->name);
-            subsystem->status = subsystem->status & ~(1 << status);
-            printf("This is the new stat: %d", subsystem->status);
-        }
-        else if(value == 1){
-            printf("This is the subsystem to set: %16s", subsystem->name);
-            subsystem->status = subsystem->status | (value << status);
-            printf("This is the new stat: %d", subsystem->status);
-
-        }
-        else{
-            return ERR_INVALID_STATUS;
-        }
+        
+        if(value < 0 || value > 1) return ERR_INVALID_STATUS;
+        subsystem->status = subsystem->status & ~(1 << status); // clear the bits
+        if(value == 1) subsystem->status = subsystem->status | (1 << status); //set the bits other than 0
     }
+    else return ERR_INVALID_STATUS;  // status code doesn't exist
 
-    // status code doesn't exist
-    else{
-        return ERR_INVALID_STATUS;
-    }
     return ERR_SUCCESS;
 }
 
