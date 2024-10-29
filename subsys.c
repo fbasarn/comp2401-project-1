@@ -32,30 +32,41 @@ int subsys_print(Subsystem *subsystem){
     if(subsystem == NULL){
         return ERR_NULL_POINTER;
     }
-    printf("Name: %s Status: ", subsystem->name);
+    printf("Name: %16s Status: ", subsystem->name);
     subsys_status_print(subsystem);
     return ERR_SUCCESS;
 }
 
 /* Function explanation */
 int subsys_status_set(Subsystem *subsystem, unsigned char status, unsigned char value){
+
     if(status == STATUS_PERFORMANCE || status == STATUS_RESOURCE){
         if(value < 0 || value > 3) {
-            printf("The value is invalid!\n");
             return ERR_INVALID_STATUS;
         }
-        printf("the status code and value is valid!\n");
-        
+        subsystem->status = subsystem->status | (value << status);
+        printf("here is the curr stat: %d", subsystem->status);
+
     }
     if(status == STATUS_DATA || status == STATUS_POWER || status == STATUS_ERROR || status == STATUS_ACTIVITY){
-        if(value < 0 || value > 1) {
-            printf("The value is invalid!\n");
+        if(value == 0){
+            printf("This is the subsystem to set: %16s", subsystem->name);
+            subsystem->status = subsystem->status & ~(1 << status);
+            printf("This is the new stat: %d", subsystem->status);
+        }
+        else if(value == 1){
+            printf("This is the subsystem to set: %16s", subsystem->name);
+            subsystem->status = subsystem->status | (value << status);
+            printf("This is the new stat: %d", subsystem->status);
+
+        }
+        else{
             return ERR_INVALID_STATUS;
         }
-        printf("the status code and value is valid!\n");
     }
+
+    // status code doesn't exist
     else{
-        printf("the status code is invalid!\n");
         return ERR_INVALID_STATUS;
     }
     return ERR_SUCCESS;
@@ -66,8 +77,8 @@ int subsys_status_print(const Subsystem *subsystem) {
     if (subsystem == NULL) {
         return ERR_NULL_POINTER;
     }
-    for (int i = 0; i < 8; i++) {
-        int bit_value = (subsystem->status >> (7 - i)) & 1;
+    for (int i = 7; i >= 0; i--) {
+        int bit_value = (subsystem->status & (1 << i)) >> i;
         printf("%d ", bit_value);
     }
     return ERR_SUCCESS;
