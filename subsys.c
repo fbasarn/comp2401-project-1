@@ -32,6 +32,7 @@ int subsys_print(Subsystem *subsystem){
     if(subsystem == NULL){
         return ERR_NULL_POINTER;
     }
+    // if(subsys_data_get(subsystem, )) there should be an if statement?
     printf("Name: %16s Status: ", subsystem->name);
     subsys_status_print(subsystem);
     return ERR_SUCCESS;
@@ -73,9 +74,6 @@ int subsys_status_print(const Subsystem *subsystem) {
 
 /* Sets the data value of the subsystem */
 int subsys_data_set(Subsystem *subsystem, unsigned int new_data, unsigned int *old_data){
-    if(new_data == NULL){
-        return ERR_NO_DATA;
-    }
     if(old_data != NULL){
         *(old_data) = subsystem->data;
     }
@@ -84,7 +82,15 @@ int subsys_data_set(Subsystem *subsystem, unsigned int new_data, unsigned int *o
     return ERR_SUCCESS;
 }
 
-/* Function explanation */
+/* Gets the data value from the subsystem if exist, and clears after reading */
 int subsys_data_get(Subsystem *subsystem, unsigned int *dest){
+    if(subsystem->status & (1 << STATUS_DATA)){
+        *(dest) = subsystem->data;
+        subsystem->data = 0;
+        subsys_status_set(subsystem, STATUS_DATA, 0); // clear the data field
+        return ERR_SUCCESS;
+    }
+
+    *(dest) = 0;
     return ERR_NO_DATA;
 }
