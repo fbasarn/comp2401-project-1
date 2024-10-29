@@ -37,7 +37,7 @@ int subsys_print(Subsystem *subsystem){
     return ERR_SUCCESS;
 }
 
-/* Function explanation */
+/* Sets any of the 5 status of the subsystem to the provided value */
 int subsys_status_set(Subsystem *subsystem, unsigned char status, unsigned char value){
 
     if(status == STATUS_PERFORMANCE || status == STATUS_RESOURCE){
@@ -58,7 +58,7 @@ int subsys_status_set(Subsystem *subsystem, unsigned char status, unsigned char 
     return ERR_SUCCESS;
 }
 
-/* Function explanation */
+/* Prints all 5 status fields of the subsystem */
 int subsys_status_print(const Subsystem *subsystem) {
     if (subsystem == NULL) {
         return ERR_NULL_POINTER;
@@ -71,9 +71,17 @@ int subsys_status_print(const Subsystem *subsystem) {
 }
 
 
-/* Function explanation */
+/* Sets the data value of the subsystem */
 int subsys_data_set(Subsystem *subsystem, unsigned int new_data, unsigned int *old_data){
-    return ERR_NO_DATA;
+    if(new_data == NULL){
+        return ERR_NO_DATA;
+    }
+    if(old_data != NULL){
+        *(old_data) = subsystem->data;
+    }
+    subsystem->data = new_data;
+    subsys_status_set(subsystem, STATUS_DATA, 1);
+    return ERR_SUCCESS;
 }
 
 /* Function explanation */

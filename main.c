@@ -41,36 +41,28 @@ int main() {
         switch (choice)
             {
             case MENU_ADD:
-                // Get the user's input and store the results in stack variables above
                 printf("Enter subsystem name: ");
                 scanf("%31s", name);
                 while (getchar() != '\n');
-                // Initialize the subsystem with the values provided
-                subsys_init(&subsystem, name, 0);
-                
-                // Add the subsystem to the collection
-                subsys_append(&subsys_collection, &subsystem);
+                subsys_init(&subsystem, name, 0); // Initialize the subsystem with the values provided
+                subsys_append(&subsys_collection, &subsystem); // Add initialized subsystem to the collection
                 break;
+            
             case MENU_PRINT:
-                // Get the user's input and store
                 printf("Enter subsystem name to print: ");
                 scanf("%31s", name); 
                 while (getchar() != '\n');
-                // Find the index of the subsystem and print
-                index = subsys_find(&subsys_collection, name);
+                
+                index = subsys_find(&subsys_collection, name); // Find the index of the subsystem within the collection
 
                 //print the subsystem if found, error message if not
-                if(indexExist(index)){
-                    printf("This is the status found: %d\n", subsys_collection.subsystems[index].status);
-                    subsys_print(&subsys_collection.subsystems[index]);
-                }
-                else{
-                    printf("Subsystem was not found, try again with a different name.\n");
-                }
+                if(indexExist(index)) subsys_print(&subsys_collection.subsystems[index]);
                 break;
+            
             case MENU_PRINTALL:
                 subsys_collection_print(&subsys_collection);
                 break;
+            
             case MENU_STATUS:
                 printf("Enter: <Subsystem Name> <Status ID, 7,6,5,4,2, or 0> <New Value (0,3)>: ");
                 scanf("%32s %hhd %hhd", name, &status, &value);
@@ -78,22 +70,22 @@ int main() {
                 
                 index = subsys_find(&subsys_collection, name);
                 
-                if(indexExist(index)){
-                    subsys_status_set(&subsys_collection.subsystems[index], status, value);
-                }
-                else{
-                    printf("Subsystem was not found, try again with a different name.\n");
-                }
+                if(indexExist(index)) subsys_status_set(&subsys_collection.subsystems[index], status, value);
+            
                 break;
+            
             case MENU_REMOVE:
                 /* code */
                 break;
+            
             case MENU_FILTER:
                 /* code */
                 break;
+            
             case MENU_DATA:
                 /* code */
                 break;
+            
             case MENU_EXIT:
                 printf("Exiting...\n");
                 break;
@@ -141,11 +133,10 @@ int print_menu(int *choice) {
     return ERR_SUCCESS;
 }
 
+// Returns 1 if the index found/subsystem exists, otherwise
+// prints an error message and returns 0
 int indexExist(int i){
-    if(i != ERR_SYS_NOT_FOUND && i != ERR_NULL_POINTER){
-        return 1;
-    }
-    else{
-        return 0;
-    }
+    if(i != ERR_SYS_NOT_FOUND && i != ERR_NULL_POINTER) return 1;
+    printf("Subsystem was not found, try again with a different name.\n");
+    return 0;
 }
