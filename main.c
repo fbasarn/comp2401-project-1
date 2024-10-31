@@ -67,11 +67,9 @@ int main() {
                 printf("Enter: <Subsystem Name> <Status ID, 7,6,5,4,2, or 0> <New Value (0,3)>: ");
                 scanf("%32s %hhd %hhd", name, &status, &value);
                 while (getchar() != '\n');
-                
+    
                 index = subsys_find(&subsys_collection, name);
-                
                 if(indexExist(index)) subsys_status_set(&subsys_collection.subsystems[index], status, value);
-            
                 break;
             
             case MENU_REMOVE:
@@ -83,7 +81,13 @@ int main() {
                 break;
             
             case MENU_DATA:
-                /* code */
+                printf("Enter: <Subsystem Name> <Data, uppercase hex without 0x>: ");
+                scanf("%32s %x", name, &data);
+                while (getchar() != '\n');
+
+                index = subsys_find(&subsys_collection, name);
+                if(indexExist(index)) subsys_data_set(&subsys_collection.subsystems[index], data, &subsys_collection.subsystems[index].data);
+                printf("Data updated successfully\n");
                 break;
             
             case MENU_EXIT:
