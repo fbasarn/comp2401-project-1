@@ -65,7 +65,11 @@ int main() {
                 break;
             
             case MENU_PRINTALL:
-                subsys_collection_print(&subsys_collection);
+                if(subsys_collection.size != 0){
+                    subsys_collection_print(&subsys_collection);
+                }else{
+                    printf("Currently there are no subsystems in the collection. Try again after adding some.\n");
+                }
                 break;
             
             case MENU_STATUS:
@@ -108,7 +112,6 @@ int main() {
                 if(indexExist(&subsys_collection, name, &index)) {
                     subsys_data_set(&subsys_collection.subsystems[index], data, &subsys_collection.subsystems[index].data);
                     printf("Data updated successfully.\n");
-
                 }
                 break;
             

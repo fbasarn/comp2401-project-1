@@ -112,7 +112,14 @@ int subsys_filter(const SubsystemCollection *src, SubsystemCollection *dest, con
         }
         subsys_append(dest, &src->subsystems[i]);
     }
-    subsys_collection_print(dest);
+
+    //print the filtered collection
+    if(dest->size == 0){
+        printf("0 subsystems found with the criteria given. Try again with a different criteria.\n");
+    }else{
+        subsys_collection_print(dest);
+    }
+    
     return ERR_SUCCESS;
 }
 
