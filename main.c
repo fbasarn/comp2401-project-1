@@ -14,7 +14,7 @@
 #define MENU_MAX 7
 
 int print_menu(int *choice);
-int indexExist(int i);
+int indexExist(const SubsystemCollection *collection, const char *name, int *index);
 
 int main() {
     int choice = -1;
@@ -59,7 +59,7 @@ int main() {
                 while (getchar() != '\n');
         
                 //print the subsystem if it's found, error message if not
-                if(indexExist(subsys_find(&subsys_collection, name))) {
+                if(indexExist(&subsys_collection, name, &index)) {
                     subsys_print(&subsys_collection.subsystems[index]);
                 }
                 break;
@@ -73,7 +73,7 @@ int main() {
                 scanf("%32s %hhd %hhd", name, &status, &value);
                 while (getchar() != '\n');
 
-                if(indexExist(subsys_find(&subsys_collection, name))) {
+                if(indexExist(&subsys_collection, name, &index)) {
                     subsys_status_set(&subsys_collection.subsystems[index], status, value);
                     printf("Status set successfully.\n");
                 }
@@ -85,7 +85,7 @@ int main() {
                 scanf("%31s", name);
                 while (getchar() != '\n');
 
-                if(indexExist(subsys_find(&subsys_collection, name))) {
+                if(indexExist(&subsys_collection, name, &index)) {
                     subsys_remove(&subsys_collection, index);
                     printf("Subsystem '%s' removed successfully.\n", name);
                 }
@@ -105,10 +105,11 @@ int main() {
                 scanf("%32s %x", name, &data);
                 while (getchar() != '\n');
 
-                if(indexExist(subsys_find(&subsys_collection, name))) {
+                if(indexExist(&subsys_collection, name, &index)) {
                     subsys_data_set(&subsys_collection.subsystems[index], data, &subsys_collection.subsystems[index].data);
+                    printf("Data updated successfully.\n");
+
                 }
-                printf("Data updated successfully.\n");
                 break;
             
             case MENU_EXIT:
@@ -160,8 +161,11 @@ int print_menu(int *choice) {
 
 // If the provided index exists in the subsystem returns 1,
 // otherwise returns 0 with an error message
-int indexExist(int i){
-    if(i != ERR_SYS_NOT_FOUND && i != ERR_NULL_POINTER) return 1;
+int indexExist(const SubsystemCollection *collection, const char *name, int *index){
+    *(index) = subsys_find(collection, name);
+    if(*(index) != ERR_SYS_NOT_FOUND && *(index) != ERR_NULL_POINTER) {
+        return 1;
+    }
     printf("Subsystem was not found, try again with a different name.\n");
     return 0;
 }
