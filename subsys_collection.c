@@ -86,7 +86,13 @@ int subsys_collection_print(SubsystemCollection *subsystems){
     return ERR_SUCCESS;
 }
 
-    /*  */
+/* 
+    Filter out the subsystems from the subsystem collection based on different status criteria provided
+    as a parameter:
+    - Accepts a string filter with 8 characters. The characters must be:
+    - * if that certain status criteria doesn't matter
+    - 0 or 1 otherwise
+ */
 int subsys_filter(const SubsystemCollection *src, SubsystemCollection *dest, const unsigned char *filter){
     if(src == NULL || filter == NULL || dest == NULL) return ERR_NULL_POINTER;
     
@@ -98,8 +104,7 @@ int subsys_filter(const SubsystemCollection *src, SubsystemCollection *dest, con
         else if (*(filter+i) == '*') wildcard = wildcard | 1 << (7 - i);
     }
 
-
-    filt = ~(filt); //flip the bits
+    filt = ~(filt); 
 
     for(int i=0; i < src->size; i++){
         if(((filt ^ src->subsystems[i].status) | wildcard) != 255){
