@@ -31,14 +31,25 @@ int subsys_append(SubsystemCollection *subsystems, const Subsystem *subsystem){
     }
     subsystems->subsystems[subsystems->size] = *(subsystem);
     subsystems->size++;
+    printf("Current Size: %d\n", subsystems->size);
+
     return ERR_SUCCESS;
 }
 
 /* 
-    Function explanation 
+    Removes the subsystem at the index given as parameter
 */
 int subsys_remove(SubsystemCollection *subsystems, int index){
-    return ERR_NO_DATA;
+    if(subsystems == NULL) return ERR_NULL_POINTER;
+    if(subsystems->size == 0) return ERR_NO_DATA;
+    if(index < 0 || index >= subsystems->size) return ERR_INVALID_INDEX;
+
+    for(int i = index; i < subsystems->size - 1; i++){
+        subsystems->subsystems[i] = subsystems->subsystems[i + 1];
+    }
+    subsystems->size--;
+
+    return ERR_SUCCESS;
 }
 
 /*  
@@ -67,14 +78,36 @@ int subsys_collection_print(SubsystemCollection *subsystems){
     }
 
     for(int i=0; i < subsystems->size; i++){
+        printf("- [ ");
         subsys_print(&(subsystems->subsystems[i]));
+        printf(" ]");
         printf("\n");
     }
     return ERR_SUCCESS;
 }
 
-    /* Function explanation */
+    /*  */
 int subsys_filter(const SubsystemCollection *src, SubsystemCollection *dest, const unsigned char *filter){
-    return ERR_NO_DATA;
+    if(src == NULL || filter == NULL || dest == NULL) return ERR_NULL_POINTER;
+    
+    unsigned char filt = 0;
+    unsigned char wildcard = 0;
+
+    for(int i = 0; i < 8; i++){
+        if(*(filter+i) == '1') filt = filt | 1 << (7 - i); 
+        else if (*(filter+i) == '*') wildcard = wildcard | 1 << (7 - i);
+    }
+
+
+    filt = ~(filt); //flip the bits
+
+    for(int i=0; i < src->size; i++){
+        if(((filt ^ src->subsystems[i].status) | wildcard) != 255){
+            continue;
+        }
+        subsys_append(dest, &src->subsystems[i]);
+    }
+    subsys_collection_print(dest);
+    return ERR_SUCCESS;
 }
 

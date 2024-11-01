@@ -21,7 +21,7 @@ int main() {
 
     // Store a subsystem collection
     SubsystemCollection subsys_collection;
-    unsigned int collection_size;
+    SubsystemCollection filterCollection;
 
     // reserve data to store necessary variables
     char name[MAX_STR];
@@ -29,10 +29,12 @@ int main() {
     unsigned int data;
     Subsystem subsystem;
     char value;
+    char filter[9];
 
     // store the index of the given subsystem
     int index;
 
+    subsys_collection_init(&subsys_collection);
     // Use a while loop to print the menu for the user and call the appropriate functions.
     // The definitions above are provided to assist with this.
     do {
@@ -40,12 +42,13 @@ int main() {
 
         switch (choice)
             {
-            case MENU_ADD:
-                printf("Enter subsystem name: ");
+            case MENU_ADD:                
+                printf("Enter subsystem name to add: ");
                 scanf("%31s", name);
                 while (getchar() != '\n');
                 subsys_init(&subsystem, name, 0); // Initialize the subsystem with the values provided
                 subsys_append(&subsys_collection, &subsystem); // Add initialized subsystem to the collection
+                printf("Subsystem '%s' added successfully.\n", name);
                 break;
             
             case MENU_PRINT:
@@ -67,17 +70,27 @@ int main() {
                 printf("Enter: <Subsystem Name> <Status ID, 7,6,5,4,2, or 0> <New Value (0,3)>: ");
                 scanf("%32s %hhd %hhd", name, &status, &value);
                 while (getchar() != '\n');
-    
                 index = subsys_find(&subsys_collection, name);
                 if(indexExist(index)) subsys_status_set(&subsys_collection.subsystems[index], status, value);
                 break;
             
             case MENU_REMOVE:
-                /* code */
+
+                printf("Enter subsystem name to remove from collection: ");
+                scanf("%31s", name);
+                while (getchar() != '\n');
+                
+                index = subsys_find(&subsys_collection, name); 
+                if(indexExist(index)) subsys_remove(&subsys_collection, index);
+                printf("Subsystem '%s' removed successfully.\n", name);
                 break;
             
             case MENU_FILTER:
-                /* code */
+                printf("Enter filtering string (8 characters of 1, 0, *): ");
+                scanf("%8s", filter);
+                while (getchar() != '\n');
+                subsys_collection_init(&filterCollection);
+                subsys_filter(&subsys_collection, &filterCollection, filter);
                 break;
             
             case MENU_DATA:
@@ -87,7 +100,7 @@ int main() {
 
                 index = subsys_find(&subsys_collection, name);
                 if(indexExist(index)) subsys_data_set(&subsys_collection.subsystems[index], data, &subsys_collection.subsystems[index].data);
-                printf("Data updated successfully\n");
+                printf("Data updated successfully.\n");
                 break;
             
             case MENU_EXIT:

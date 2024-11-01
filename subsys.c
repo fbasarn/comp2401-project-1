@@ -33,7 +33,7 @@ int subsys_print(Subsystem *subsystem){
         return ERR_NULL_POINTER;
     }
     // if(subsys_data_get(subsystem, )) there should be an if statement?
-    printf("Name: %16s", subsystem->name);
+    printf("Name: %16s,", subsystem->name);
     subsys_status_print(subsystem);
     return ERR_SUCCESS;
 }
@@ -64,14 +64,27 @@ int subsys_status_print(const Subsystem *subsystem) {
     if (subsystem == NULL) {
         return ERR_NULL_POINTER;
     }
-    printf(" Status: ");
-    for (int i = 7; i >= 0; i--) {
+
+    char stat[6][6] = {"PWR", "|DATA", "|ACT", "|ERR", "|PERF", "|RES"};
+    printf(" Status: (");
+    int x = 0;
+    
+    for (int i = 7; i >= 4; i--) {
         int bit_value = (subsystem->status & (1 << i)) >> i;
-        printf("%d ", bit_value);
+        printf("%s: %d ", stat[x], bit_value);
+        x++;
     }
+    for(int i = 2; i >= 0; i-=2){
+        int bit_value = (subsystem->status & (3 << i)) >> i;
+        printf("%s: %d ", stat[x], bit_value);
+        x++;
+    }
+    
+    printf(")");
+    
     int data;
     if(subsys_data_get(subsystem, &data) != ERR_NO_DATA){
-        printf(" Data: %08X", data);
+        printf(", Data: %08X", data);
     }
 
     return ERR_SUCCESS;
