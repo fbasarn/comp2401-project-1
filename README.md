@@ -1,1 +1,4 @@
-# comp2401-project-1
+# COMP2401 PROJECT1
+##Feyza Basaran
+##101246386
+
