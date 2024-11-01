@@ -162,8 +162,10 @@ int print_menu(int *choice) {
     return ERR_SUCCESS;
 }
 
-// If the provided index exists in the subsystem returns 1,
-// otherwise returns 0 with an error message
+// Takes a subsystem collection pointer, a char pointer, and an integer pointer
+// Checks if subsys_find() function gives an error with provided parameters, 
+// returns 1(true) if no error
+// otherwise returns 0 with an error message printed to user
 int indexExist(const SubsystemCollection *collection, const char *name, int *index){
     *(index) = subsys_find(collection, name);
     if(*(index) != ERR_SYS_NOT_FOUND && *(index) != ERR_NULL_POINTER) {

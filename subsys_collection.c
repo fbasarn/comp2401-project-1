@@ -7,8 +7,13 @@
 */
 
 /* 
-    Initialization of the SubsystemCollection, sets the size
-    to 0.
+    Initialization of the SubsystemCollection
+    
+    out: sets the size of collection to 0.
+
+    Returns:
+    - ERR_NULL_POINTER If the pointer parameter is null
+    - ERR_SUCCESS if there is no error
  */
 int subsys_collection_init(SubsystemCollection *subsystems){
     if(subsystems == NULL){
@@ -19,8 +24,13 @@ int subsys_collection_init(SubsystemCollection *subsystems){
 }
 
 /* 
-    Appends a new subsystem to the subsytems collection, inscrements the size of
-    the substytems colections 
+    Add a new subsystem to the subsytems collection, and increments the size of
+    the substytems colections
+
+    Returns:
+    - ERR_NULL_POINTER if the pointer parameter(s) is/are null
+    - ERR_MAX_CAPACITY if max capacity of collection is reached
+    - ERR_SUCCESS if there is no error.
 */
 int subsys_append(SubsystemCollection *subsystems, const Subsystem *subsystem){
     if(subsystems == NULL || subsystem == NULL){
@@ -37,7 +47,14 @@ int subsys_append(SubsystemCollection *subsystems, const Subsystem *subsystem){
 }
 
 /* 
-    Removes the subsystem at the index given as parameter
+    Removes the subsystem in the collection at the index given as parameter.
+    Shifts the remaining elements by one position, and decrements the size
+    of the collection.
+
+    Returns:
+    - ERR_NULL_POINTER if the pointer parameter is null
+    - ERR_NO_DATA if the collection size is 0
+    - ERR_SUCCESS if there is no error.
 */
 int subsys_remove(SubsystemCollection *subsystems, int index){
     if(subsystems == NULL) return ERR_NULL_POINTER;
@@ -53,9 +70,16 @@ int subsys_remove(SubsystemCollection *subsystems, int index){
 }
 
 /*  
-    Finds the provided subsystem name within the subsystem collection if it exists
-    and returns the index of the subsystem
-*/
+    Finds the subsystem witht he provided name within the subsystem collection
+    
+    out: an integer corresponding to the index of the subsystem found
+    
+    Returns:
+    - ERR_NULL_POINTER if the pointer parameter(s) is/are null
+    - ERR_SYS_NOT_FOUND if the subsystem was not found.
+    - index of the subsystem if it is found
+    */
+
 int subsys_find(const SubsystemCollection *subsystems, const char *name){
     if(subsystems == NULL || name == NULL){
         return ERR_NULL_POINTER;
@@ -70,7 +94,11 @@ int subsys_find(const SubsystemCollection *subsystems, const char *name){
 }
 
 /* 
-    Prints all the subsystems in the collection 
+    Prints all the subsystems in the collection given as a parameter
+    
+    Returns:
+    - ERR_NULL_POINTER if the pointer parameter(s) is/are null
+    - ERR_SUCCESS if there is no error
 */
 int subsys_collection_print(SubsystemCollection *subsystems){
     if(subsystems == NULL){
@@ -88,10 +116,16 @@ int subsys_collection_print(SubsystemCollection *subsystems){
 
 /* 
     Filter out the subsystems from the subsystem collection based on different status criteria provided
-    as a parameter:
-    - Accepts a string filter with 8 characters. The characters must be:
+    as a parameter. Accepts a string 'filter' with 8 characters. The characters must be:
     - * if that certain status criteria doesn't matter
     - 0 or 1 otherwise
+    
+    out: Prints all the subsystems passed that provided filter
+    
+    Returns:
+    - ERR_NULL_POINTER if the pointer parameter(s) is/are null
+    - ERR_SUCCESS if there is no error
+
  */
 int subsys_filter(const SubsystemCollection *src, SubsystemCollection *dest, const unsigned char *filter){
     if(src == NULL || filter == NULL || dest == NULL) return ERR_NULL_POINTER;

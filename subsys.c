@@ -10,7 +10,11 @@
 /* 
     Initialization of the memory pointed by the subsystem,
     initializes the name and status with provided values and 
-    sets the data to 0
+    sets the data to 0.
+
+    Returns:
+    - ERR_NULL_POINTER If the pointer parameter(s) is/are null
+    - ERR_SUCCESS if there is no error
 */
 int subsys_init(Subsystem *subsystem, const char *name, char status){
     if (subsystem == NULL || name == NULL){
@@ -26,19 +30,33 @@ int subsys_init(Subsystem *subsystem, const char *name, char status){
 }
 
 /* 
-    Prints the name, status and the data of the subsystem provided
+    Prints the name, status and the data of the subsystem provided,
+    calls subsys_status_print() function to print the status
+
+    Returns:
+    - ERR_NULL_POINTER If the pointer parameter(s) is/are null
+    - ERR_SUCCESS if there is no error
 */
 int subsys_print(Subsystem *subsystem){
     if(subsystem == NULL){
         return ERR_NULL_POINTER;
     }
-    // if(subsys_data_get(subsystem, )) there should be an if statement?
+
     printf("Name: %16s,", subsystem->name);
     subsys_status_print(subsystem);
     return ERR_SUCCESS;
 }
 
-/* Sets any of the 5 status of the subsystem to the provided value */
+/* 
+    Sets any of the 5 status of the subsystem to the provided value. 
+    Takes a status code that must be one of the defined codes in subsystem.h,
+    and a char value that must be between 0 - 3.
+    
+    Returns:
+    - ERR_INVALID_STATUS If the status doesn't match in any defined status codes
+    in subsystem.h or the value provided is out of range for that status
+    - ERR_SUCCESS if there is no error
+*/
 int subsys_status_set(Subsystem *subsystem, unsigned char status, unsigned char value){
 
     if(status == STATUS_PERFORMANCE || status == STATUS_RESOURCE){
@@ -59,7 +77,15 @@ int subsys_status_set(Subsystem *subsystem, unsigned char status, unsigned char 
     return ERR_SUCCESS;
 }
 
-/* Prints all 5 status fields of the subsystem */
+/* 
+    Prints all 5 status fields of the subsystem individually. Takes a subsystem as a parameter,
+    loops over the individual bits in the status field, and prints them to the terminal.
+    
+    Returns:
+    - ERR_NULL_POINTER If the pointer parameter(s) is/are null
+    - ERR_SUCCESS if there is no error
+
+*/
 int subsys_status_print(const Subsystem *subsystem) {
     if (subsystem == NULL) {
         return ERR_NULL_POINTER;
@@ -91,7 +117,15 @@ int subsys_status_print(const Subsystem *subsystem) {
 }
 
 
-/* Sets the data value of the subsystem */
+/* 
+    Sets the data value of the subsystem. Takes an integer data, and an integer pointer(optional).
+    If pointer exists, stores old data in that memmory. 
+    Sets the new data to the data field, and updates the corresponding status.
+
+    Returns:
+    - ERR_SUCCESS after the new data is set.
+
+*/
 int subsys_data_set(Subsystem *subsystem, unsigned int new_data, unsigned int *old_data){
     if(old_data != NULL){
         *(old_data) = subsystem->data;
@@ -101,7 +135,15 @@ int subsys_data_set(Subsystem *subsystem, unsigned int new_data, unsigned int *o
     return ERR_SUCCESS;
 }
 
-/* Gets the data value from the subsystem if exist, and clears after reading */
+/* 
+    Reads the data value from the subsystem if exists. 
+    Clears the data, and clears the corresponding status field after read.
+
+    Returns:
+    - ERR_NO_DATA if there is no data to read.
+    - ERR_SUCCESS if there is no error
+
+*/
 int subsys_data_get(Subsystem *subsystem, unsigned int *dest){
     if(subsystem->status & (1 << STATUS_DATA)){
         *(dest) = subsystem->data;
