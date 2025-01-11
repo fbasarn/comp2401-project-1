@@ -6,12 +6,12 @@
 This program is implemented for users to manually input information about subsystems 
 of a skyrocket. Each subsystems stores a status character where each bit in positions (7, 6, 5, 4, 2 or 0)shows the following status codes:
 
-7: (power) 0: Off, 1: On
-6: (data) 0: No Data, 1: Data Queued
-5: (activity) 0: Off, 1: On
-4: (error) 0: No Error, 1: Error
-3, 2: (performance) 00: None, 01: Low, 10: Optimal, 11: High
-1, 0: (resource) 00: None, 01: Low, 10: Sufficient, 11: High
+7: (power) 0: Off, 1: On  
+6: (data) 0: No Data, 1: Data Queued  
+5: (activity) 0: Off, 1: On  
+4: (error) 0: No Error, 1: Error  
+3, 2: (performance) 00: None, 01: Low, 10: Optimal, 11: High  
+1, 0: (resource) 00: None, 01: Low, 10: Sufficient, 11: High  
 
 The user can perform the following operations using the corresponding menu options:
 - Add a Subsystem to the collection
